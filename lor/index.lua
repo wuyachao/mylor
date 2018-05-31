@@ -8,7 +8,9 @@ local Response = require("lor.lib.response")
 local Application = require("lor.lib.application")
 local Wrap = require("lor.lib.wrap")
 
-LOR_FRAMEWORK_DEBUG = false
+LOR_FRAMEWORK_DEBUG = true
+
+-- 5.index文件new一个lor对象，lor()就是执行createApplication创建一个实例，且加载路由，请求回应
 
 local createApplication = function(options)
     if options and options.debug and type(options.debug) == 'boolean' then
