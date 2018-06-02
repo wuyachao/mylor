@@ -23,10 +23,11 @@ function App:new()
     instance.cache = {}
     instance.settings = {}
     instance.router = Router:new()
-
+    local helper = require "tools.helper"
+    helper:print_r("Application:new and new router")
     setmetatable(instance, {
         __index = self,
-        __call = self.handle
+--        __call = self.handle
     })
 
     instance:init_method()
@@ -50,7 +51,8 @@ function App:run(final_handler)
         local view = View:new(view_config)
         response.view = view
     end
-
+    local helper = require "tools.helper"
+    helper:print_r("Application:run")
     self:handle(request, response, final_handler)
 end
 
@@ -89,7 +91,8 @@ function App:handle(req, res, callback)
     if not router then
         return done()
     end
-
+    local helper = require "tools.helper"
+    helper:print_r("Application:handle")
     local err_msg
     local ok, e = xpcall(function()
         router:handle(req, res, done)

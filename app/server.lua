@@ -3,6 +3,9 @@ local lor = require("lor.index")
 local router = require("app.router")
 local app = lor()
 
+local helper = require "tools.helper"
+helper:print_r("server:1")
+
 -- 3.返回app这个对象，这个对象由lor文件夹下的index返回
 -- 4.app = lor(),使用了_call 索引, 允许把表当函数调用
 

@@ -13,7 +13,7 @@ local string_lower = string.lower
 
 local utils = require("lor.lib.utils.utils")
 local supported_http_methods = require("lor.lib.methods")
-local debug = require("lor.lib.debug")
+--local debug = require("lor.lib.debug")
 local Trie = require("lor.lib.trie")
 local random = utils.random
 local mixin = utils.mixin
@@ -33,22 +33,22 @@ local allowed_conf = {
     },
 }
 
-local function restore(fn, obj)
-    local origin = {
-        path = obj['path'],
-        query = obj['query'],
-        next = obj['next'],
-        locals = obj['locals'],
-    }
-
-    return function(err)
-        obj['path'] = origin.path
-        obj['query'] = origin.query
-        obj['next'] = origin.next
-        obj['locals'] = origin.locals
-        fn(err)
-    end
-end
+--local function restore(fn, obj)
+--    local origin = {
+--        path = obj['path'],
+--        query = obj['query'],
+--        next = obj['next'],
+--        locals = obj['locals'],
+--    }
+--
+--    return function(err)
+--        obj['path'] = origin.path
+--        obj['query'] = origin.query
+--        obj['next'] = origin.next
+--        obj['locals'] = origin.locals
+--        fn(err)
+--    end
+--end
 
 local function compose_func(matched, method)
     if not matched or type(matched.pipeline) ~= "table" then
@@ -146,11 +146,11 @@ function Router:handle(req, res, out)
     end
     local method = req.method and string_lower(req.method)
     local done = out
-
-    local stack = nil
+    local stack
     local matched = self.trie:match(path)
     local matched_node = matched.node
-
+    local helper = require "tools.helper"
+    helper:print_r("router:handle")
     if not method or not matched_node then
         if res.status then res:status(404) end
         return self:error_handle("404! not found.", req, res, self.trie.root, done)
@@ -186,10 +186,12 @@ function Router:handle(req, res, out)
         if not handler then
             return done(err)
         end
-
+        local helper = require "tools.helper"
+        helper:print_r(stack)
         local err_msg
-        local ok, ee = xpcall(function()
+        local ok, _ = xpcall(function()
             handler.func(req, res, next)
+
             req.params = mixin(parsed_params, req.params)
         end, function(msg)
             if msg then
@@ -233,7 +235,7 @@ function Router:error_handle(err_msg, req, res, node, done)
             return done(err)
         end
 
-        local ok, ee = xpcall(function()
+        local ok, _ = xpcall(function()
             error_handler.func(err, req, res, next)
         end, function(msg)
             if msg then

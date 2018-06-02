@@ -10,7 +10,8 @@ local Request = {}
 function Request:new()
     local body = {} -- body params
     local headers = ngx.req.get_headers()
-
+    local helper = require "tools.helper"
+    helper:print_r("Request:new")
     local header = headers['Content-Type']
     -- the post request have Content-Type header set
     if header then
