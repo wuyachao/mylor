@@ -4,7 +4,7 @@ local router = require("app.router")
 local app = lor()
 
 local helper = require "tools.helper"
-helper:print_r("server:1")
+helper:print_r("server:conf")
 
 -- 3.返回app这个对象，这个对象由lor文件夹下的index返回
 -- 4.app = lor(),使用了_call 索引, 允许把表当函数调用
@@ -35,8 +35,9 @@ app:use(function(req, res, next)
     res:set_header("X-Powered-By", "Lor framework")
     next()
 end)
-
+helper:print_r("server:use")
 router(app) -- 业务路由处理
+helper:print_r("server:router(app)")
 
 -- 错误处理插件，可根据需要定义多个
 app:erroruse(function(err, req, res, next)

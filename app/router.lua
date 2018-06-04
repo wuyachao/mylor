@@ -2,9 +2,11 @@
 local userRouter = require("app.routes.user")
 
 return function(app)
-
+    local helper = require "tools.helper"
+    helper:print_r("app:router")
     -- simple router: hello world!
     app:get("/hello", function(req, res, next)
+        helper:print_r("app:router/hello")
         res:send("hi! welcome to lor framework.")
     end)
 

@@ -24,7 +24,7 @@ function App:new()
     instance.settings = {}
     instance.router = Router:new()
     local helper = require "tools.helper"
-    helper:print_r("Application:new and new router")
+    helper:print_r("Application:new app and new router")
     setmetatable(instance, {
         __index = self,
 --        __call = self.handle
@@ -57,6 +57,8 @@ function App:run(final_handler)
 end
 
 function App:init(options)
+    local helper = require "tools.helper"
+    helper:print_r("Application:init")
     self:default_configuration(options)
 end
 
