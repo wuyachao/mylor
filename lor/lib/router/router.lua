@@ -151,6 +151,7 @@ function Router:handle(req, res, out)
     local matched_node = matched.node
     local helper = require "tools.helper"
     helper:print_r("router:handle")
+
     if not method or not matched_node then
         if res.status then res:status(404) end
         return self:error_handle("404! not found.", req, res, self.trie.root, done)
@@ -186,12 +187,10 @@ function Router:handle(req, res, out)
         if not handler then
             return done(err)
         end
-        local helper = require "tools.helper"
-        helper:print_r(stack)
+
         local err_msg
         local ok, _ = xpcall(function()
             handler.func(req, res, next)
-
             req.params = mixin(parsed_params, req.params)
         end, function(msg)
             if msg then

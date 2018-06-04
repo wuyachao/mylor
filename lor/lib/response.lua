@@ -16,7 +16,8 @@ function Response:new()
         body = '--default body. you should not see this by default--',
         view = nil
     }
-
+    local helper = require "tools.helper"
+    helper:print_r("Response:new")
     setmetatable(instance, { __index = self })
     return instance
 end
